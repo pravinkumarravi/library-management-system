@@ -74,6 +74,16 @@ class Issue_model extends App_Model
         return $this->db->where('status', 'issued')->count_all_results($this->table);
     }
 
+    /**
+     * Whether a member currently has an unreturned book.
+     */
+    public function has_active_issue(int|string $member_id): bool
+    {
+        return (bool) $this->db->where('member_id', $member_id)
+            ->where('status', 'issued')
+            ->count_all_results($this->table);
+    }
+
     public function count_overdue(?string $today = null): int
     {
         $today = $today ?: date('Y-m-d');

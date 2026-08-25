@@ -31,9 +31,15 @@ class Issues extends App_Controller
 
     public function issue(): void
     {
+        $active_ids = array();
+        foreach ($this->Issue_model->get_active() as $row) {
+            $active_ids[$row->member_id] = true;
+        }
+
         $data = array(
-            'members' => $this->Member_model->get_all(),
-            'books'   => $this->Book_model->get_all(),
+            'members'         => $this->Member_model->get_all(),
+            'books'           => $this->Book_model->get_all(),
+            'busy_member_ids' => $active_ids,
         );
 
         if ($this->input->post()) {
@@ -48,6 +54,11 @@ class Issues extends App_Controller
 
                 if (!$this->Book_model->is_available($book_id)) {
                     $this->flash('danger', 'This book is not available for issue.');
+                    redirect('issues/issue');
+                }
+
+                if ($this->Issue_model->has_active_issue($member_id)) {
+                    $this->flash('danger', 'This member already has an unreturned book. Return the previous book before issuing a new one.');
                     redirect('issues/issue');
                 }
 
