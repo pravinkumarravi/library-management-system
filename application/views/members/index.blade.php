@@ -59,13 +59,18 @@
                             </td>
                             <td class="py-3 whitespace-nowrap">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ $base_url }}members/edit/{{ $m->id }}"
-                                        class="inline-flex items-center justify-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                                        Edit
+                                    <a href="{{ $base_url }}members/edit/{{ $m->id }}" title="Edit"
+                                        class="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-gray-300 bg-white text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                        </svg>
                                     </a>
-                                    <a href="{{ $base_url }}members/delete/{{ $m->id }}" onclick="return confirm('Delete this member?');"
-                                        class="inline-flex items-center justify-center gap-1 rounded-lg bg-error-500 px-3 py-1.5 text-theme-xs font-medium text-white shadow-theme-xs transition-colors hover:bg-error-600">
-                                        Delete
+                                    <a href="{{ $base_url }}members/delete/{{ $m->id }}" title="Delete" onclick="return confirm('Delete this member?');"
+                                        class="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-error-500 text-white shadow-theme-xs transition-colors hover:bg-error-600">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
                                     </a>
                                 </div>
                             </td>

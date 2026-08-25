@@ -53,9 +53,12 @@
                             </td>
                             <td class="py-3 whitespace-nowrap">
                                 <div class="flex justify-end">
-                                    <a href="{{ $base_url }}issues/return_book/{{ $row->id }}" onclick="return confirm('Return this book?');"
-                                        class="inline-flex items-center justify-center gap-1 rounded-lg bg-brand-500 px-3 py-1.5 text-theme-xs font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
-                                        Return
+                                    <a href="{{ $base_url }}issues/return_book/{{ $row->id }}" title="Return" onclick="return confirm('Return this book?');"
+                                        class="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-brand-500 text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 4v6h6"></path>
+                                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                        </svg>
                                     </a>
                                 </div>
                             </td>
