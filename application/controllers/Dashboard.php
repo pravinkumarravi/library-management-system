@@ -34,6 +34,6 @@ class Dashboard extends App_Controller
             'recent_issues'      => array_slice($this->Issue_model->get_history(), 0, 6),
         );
 
-        $this->view('dashboard/index', $data);
+        view('dashboard/index', $data);
     }
 }

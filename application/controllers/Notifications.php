@@ -9,7 +9,7 @@ class Notifications extends App_Controller
         $data = array(
             'notifications' => $this->Notification_model->all_for_user($user['id']),
         );
-        $this->view('notifications/index', $data);
+        view('notifications/index', $data);
     }
 
     /**
@@ -30,7 +30,7 @@ class Notifications extends App_Controller
     {
         $user = $this->session->userdata('user');
         $this->Notification_model->mark_all_read($user['id']);
-        $this->flash('success', 'All notifications marked as read.');
+        flash('success', 'All notifications marked as read.');
         redirect('notifications');
     }
 }

@@ -38,8 +38,11 @@ class App_Controller extends CI_Controller
 
     /**
      * Render a Blade template and send it to the browser.
+     *
+     * Also injects notification data for the header bell. Public so the
+     * global view() helper (site_helper) can delegate to it.
      */
-    protected function view(string $view, array $data = array()): void
+    public function view(string $view, array $data = array()): void
     {
         $data['unread_notifications'] = $this->unread_notifications;
         $data['recent_notifications'] = $this->recent_notifications;
@@ -48,8 +51,10 @@ class App_Controller extends CI_Controller
 
     /**
      * Queue a flash message rendered by the layout.
+     *
+     * Public so the global flash() helper (global_helper) can delegate to it.
      */
-    protected function flash(string $type, string $text): void
+    public function flash(string $type, string $text): void
     {
         $this->session->set_flashdata('message', array(
             'type' => $type,

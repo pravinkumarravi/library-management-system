@@ -60,7 +60,7 @@ application/
 ├── config/        # CI3 config (base_url auto-detects, migrations enabled)
 ├── controllers/   # Auth, Books, Categories, Members, Issues, Dashboard
 ├── core/          # App_Controller / App_Model base classes
-├── migrations/    # 001–005 schema migrations (CLI)
+├── migrations/    # 001–006 schema migrations (CLI)
 ├── models/        # Book, Category, Issue, Member, User models
 └── views/         # Blade templates (layouts, auth, dashboard, crud)
 assets/

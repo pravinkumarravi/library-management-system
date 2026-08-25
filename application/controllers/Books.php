@@ -16,7 +16,7 @@ class Books extends App_Controller
             'books'   => $this->Book_model->get_all($search ?: ''),
             'search'  => $search,
         );
-        $this->view('books/index', $data);
+        view('books/index', $data);
     }
 
     public function create(): void
@@ -56,7 +56,7 @@ class Books extends App_Controller
             'category' => $category ? $category->name : null,
             'taken_by' => $this->Issue_model->get_by_book($book->id),
         );
-        $this->view('books/view', $data);
+        view('books/view', $data);
     }
 
     private function _form(array $data): void
@@ -96,24 +96,24 @@ class Books extends App_Controller
                     }
                     $fields['available_copies'] = $available;
                     $this->Book_model->update($id, $fields);
-                    $this->flash('success', 'Book updated successfully.');
+                    flash('success', 'Book updated successfully.');
                 } else {
                     $fields['available_copies'] = $total;
                     $fields['created_at']        = date('Y-m-d H:i:s');
                     $this->Book_model->insert($fields);
-                    $this->flash('success', 'Book added successfully.');
+                    flash('success', 'Book added successfully.');
                 }
                 redirect('books');
             }
         }
 
-        $this->view('books/form', $data);
+        view('books/form', $data);
     }
 
     public function delete(?int $id = NULL): void
     {
         $this->Book_model->delete($id);
-        $this->flash('success', 'Book deleted successfully.');
+        flash('success', 'Book deleted successfully.');
         redirect('books');
     }
 }

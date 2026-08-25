@@ -14,19 +14,19 @@ class Issues extends App_Controller
     public function index(): void
     {
         $data = array('issues' => $this->Issue_model->get_active());
-        $this->view('issues/index', $data);
+        view('issues/index', $data);
     }
 
     public function overdue(): void
     {
         $data = array('issues' => $this->Issue_model->get_overdue());
-        $this->view('issues/overdue', $data);
+        view('issues/overdue', $data);
     }
 
     public function history(): void
     {
         $data = array('issues' => $this->Issue_model->get_history());
-        $this->view('issues/history', $data);
+        view('issues/history', $data);
     }
 
     public function issue(): void
@@ -54,7 +54,7 @@ class Issues extends App_Controller
                 $due_date  = $this->input->post('due_date', TRUE);
 
                 if (!$this->Book_model->is_available($book_id)) {
-                    $this->flash('danger', 'This book is not available for issue.');
+                    flash('danger', 'This book is not available for issue.');
                     redirect('issues/issue');
                 }
 
@@ -74,7 +74,7 @@ class Issues extends App_Controller
                             . ($held ? "they still hold '{$held}'" : 'they already have an unreturned book'),
                         'issues'
                     );
-                    $this->flash('danger', 'This member already has an unreturned book. Return the previous book before issuing a new one.');
+                    flash('danger', 'This member already has an unreturned book. Return the previous book before issuing a new one.');
                     redirect('issues/issue');
                 }
 
@@ -109,12 +109,12 @@ class Issues extends App_Controller
                     );
                 }
 
-                $this->flash('success', 'Book issued successfully.');
+                flash('success', 'Book issued successfully.');
                 redirect('issues');
             }
         }
 
-        $this->view('issues/issue', $data);
+        view('issues/issue', $data);
     }
 
     public function return_book(?int $id = NULL): void
@@ -147,7 +147,7 @@ class Issues extends App_Controller
         );
 
         $note = $fine > 0 ? ' Fine collected: ' . money($fine) : '';
-        $this->flash('success', 'Book returned successfully.' . $note);
+        flash('success', 'Book returned successfully.' . $note);
         redirect('issues');
     }
 }

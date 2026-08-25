@@ -40,7 +40,7 @@ class Auth extends CI_Controller
             }
         }
 
-        echo $this->blade->view('auth/login', $data);
+        view('auth/login', $data);
     }
 
     public function logout(): void

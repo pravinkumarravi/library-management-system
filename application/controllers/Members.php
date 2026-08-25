@@ -14,7 +14,7 @@ class Members extends App_Controller
         $search = $this->input->get('search', TRUE);
         $members = $this->Member_model->get_all($search ?: '');
         $data = array('members' => $members, 'search' => $search);
-        $this->view('members/index', $data);
+        view('members/index', $data);
     }
 
     public function create(): void
@@ -52,26 +52,26 @@ class Members extends App_Controller
 
                 if ($id) {
                     $this->Member_model->update($id, $fields);
-                    $this->flash('success', 'Member updated successfully.');
+                    flash('success', 'Member updated successfully.');
                 } else {
                     $fields['created_at'] = date('Y-m-d H:i:s');
                     $this->Member_model->insert($fields);
-                    $this->flash('success', 'Member added successfully.');
+                    flash('success', 'Member added successfully.');
                 }
                 redirect('members');
             }
         }
 
-        $this->view('members/form', $data);
+        view('members/form', $data);
     }
 
     public function delete(?int $id = NULL): void
     {
         if ($this->Member_model->active_issues($id) > 0) {
-            $this->flash('danger', 'Cannot delete a member with books still issued.');
+            flash('danger', 'Cannot delete a member with books still issued.');
         } else {
             $this->Member_model->delete($id);
-            $this->flash('success', 'Member deleted successfully.');
+            flash('success', 'Member deleted successfully.');
         }
         redirect('members');
     }

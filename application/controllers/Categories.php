@@ -16,7 +16,7 @@ class Categories extends App_Controller
             $c->book_count = $this->Category_model->count_books($c->id);
         }
         $data = array('categories' => $categories);
-        $this->view('categories/index', $data);
+        view('categories/index', $data);
     }
 
     public function create(): void
@@ -49,26 +49,26 @@ class Categories extends App_Controller
 
                 if ($id) {
                     $this->Category_model->update($id, $fields);
-                    $this->flash('success', 'Category updated successfully.');
+                    flash('success', 'Category updated successfully.');
                 } else {
                     $fields['created_at'] = date('Y-m-d H:i:s');
                     $this->Category_model->insert($fields);
-                    $this->flash('success', 'Category added successfully.');
+                    flash('success', 'Category added successfully.');
                 }
                 redirect('categories');
             }
         }
 
-        $this->view('categories/form', $data);
+        view('categories/form', $data);
     }
 
     public function delete(?int $id = NULL): void
     {
         if ($this->Category_model->count_books($id) > 0) {
-            $this->flash('danger', 'Cannot delete a category that still has books.');
+            flash('danger', 'Cannot delete a category that still has books.');
         } else {
             $this->Category_model->delete($id);
-            $this->flash('success', 'Category deleted successfully.');
+            flash('success', 'Category deleted successfully.');
         }
         redirect('categories');
     }

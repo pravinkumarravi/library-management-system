@@ -8,7 +8,7 @@
     },
     "autoload": {
         "files": [
-            "application/helpers/site_helper.php"
+            "application/helpers/global_helper.php"
         ]
     },
     "config": {

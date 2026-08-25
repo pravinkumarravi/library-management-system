@@ -15,11 +15,13 @@ class Migration_Create_books extends CI_Migration
             'category_id'      => array('type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE),
             'total_copies'     => array('type' => 'INT', 'constraint' => 11, 'default' => 1),
             'available_copies' => array('type' => 'INT', 'constraint' => 11, 'default' => 1),
+            'slug'             => array('type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE),
             'created_at'       => array('type' => 'DATETIME', 'null' => TRUE),
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_key('category_id');
         $this->dbforge->create_table('books', TRUE);
+        $this->db->query('CREATE UNIQUE INDEX uq_books_slug ON books (slug)');
     }
 
     public function down(): void

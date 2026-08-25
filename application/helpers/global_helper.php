@@ -17,6 +17,48 @@ if (!function_exists('is_active')) {
     }
 }
 
+if (!function_exists('view')) {
+    /**
+     * Render a Blade template (Laravel-style global helper).
+     *
+     * Delegates to App_Controller::view() when available so controllers
+     * keep the notification data injection; otherwise renders directly
+     * (e.g. the login page, which uses a plain CI_Controller).
+     */
+    function view(string $view, array $data = array()): void
+    {
+        $ci =& get_instance();
+
+        // App_Controller::view() also injects notification data for the header bell.
+        if ($ci instanceof App_Controller) {
+            $ci->view($view, $data);
+            return;
+        }
+
+        echo $ci->blade->view($view, $data);
+    }
+}
+
+if (!function_exists('flash')) {
+    /**
+     * Queue a flash message for the next request (Laravel-style helper).
+     *
+     * Delegates to App_Controller::flash(); controllers that do not extend
+     * App_Controller can fall back to CI's session flashdata directly.
+     */
+    function flash(string $type, string $text): void
+    {
+        $ci =& get_instance();
+
+        if ($ci instanceof App_Controller) {
+            $ci->flash($type, $text);
+            return;
+        }
+
+        $ci->session->set_flashdata('message', array('type' => $type, 'text' => $text));
+    }
+}
+
 if (!function_exists('money')) {
     /**
      * Format a numeric amount as Indian Rupees.

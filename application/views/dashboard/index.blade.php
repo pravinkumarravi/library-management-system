@@ -9,8 +9,9 @@
         <!-- Books -->
         <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
             <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-                <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V4C20 2.9 19.1 2 18 2ZM6 4H11V12L8.5 10.5L6 12V4Z" fill="" />
+                <svg class="text-gray-800 dark:text-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 6.25C10.303 5.036 8.117 4.5 6 4.5c-1.051 0-2.03.119-2.917.345v12.62c.9-.23 1.895-.345 2.917-.345 2.117 0 4.303.536 6 1.75 1.697-1.214 3.883-1.75 6-1.75 1.022 0 2.017.115 2.917.345V4.845C20.03 4.619 19.051 4.5 18 4.5c-2.117 0-4.303.536-6 1.75Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                    <path d="M12 6.25v12.62" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                 </svg>
             </div>
             <div class="flex items-end justify-between mt-5">
@@ -69,8 +70,8 @@
         <!-- Overdue -->
         <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
             <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-                <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2ZM16.2 16.2L11 13V7H12.5V12.3L17 15L16.2 16.2Z" fill="" />
+                <svg class="text-gray-800 dark:text-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 2v4M16 2v4M3 8h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </div>
             <div class="flex items-end justify-between mt-5">
