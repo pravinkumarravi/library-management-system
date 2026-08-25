@@ -11,7 +11,7 @@ use eftec\bladeone\BladeOne;
  */
 class Blade
 {
-    protected $blade;
+    protected BladeOne $blade;
 
     public function __construct()
     {
@@ -40,7 +40,7 @@ class Blade
     /**
      * Render a Blade template and return the HTML.
      */
-    public function view($template, $data = array())
+    public function view(string $template, array $data = []): string
     {
         $CI =& get_instance();
 
@@ -56,7 +56,7 @@ class Blade
      * BladeOne treats template names containing a slash as literal paths and
      * does not append the .blade.php extension, so we normalise them here.
      */
-    protected function normalize($template)
+    protected function normalize(string $template): string
     {
         if (substr($template, -10) === '.blade.php') {
             return $template;
