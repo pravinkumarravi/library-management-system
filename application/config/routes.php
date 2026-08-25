@@ -52,3 +52,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/*
+| -------------------------------------------------------------------------
+| Books
+| -------------------------------------------------------------------------
+| Keep the fixed action segments ahead of the slug pattern so
+| /books/create, /books/edit/5, /books/delete/5 keep working, while
+| /books/<slug> maps to Books::show().
+*/
+$route['books/create'] = 'books/create';
+$route['books/edit/(:num)'] = 'books/edit/$1';
+$route['books/delete/(:num)'] = 'books/delete/$1';
+$route['books/([a-z0-9\-]+)'] = 'books/show/$1';

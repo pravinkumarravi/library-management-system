@@ -28,6 +28,7 @@
                 <thead>
                     <tr class="border-t border-gray-100 dark:border-gray-800">
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Title</p></th>
+                        <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Slug</p></th>
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Author</p></th>
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">ISBN</p></th>
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Category</p></th>
@@ -39,7 +40,10 @@
                     @foreach($books as $b)
                         <tr class="border-t border-gray-100 dark:border-gray-800">
                             <td class="py-3 whitespace-nowrap">
-                                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">{{ $b->title }}</p>
+                                <a href="{{ $base_url }}books/{{ $b->slug }}" class="font-medium text-gray-800 text-theme-sm dark:text-white/90 hover:text-brand-600 dark:hover:text-brand-400">{{ $b->title }}</a>
+                            </td>
+                            <td class="py-3 whitespace-nowrap">
+                                <code class="text-theme-xs text-gray-500 dark:text-gray-400">{{ $b->slug }}</code>
                             </td>
                             <td class="py-3 whitespace-nowrap">
                                 <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $b->author }}</p>

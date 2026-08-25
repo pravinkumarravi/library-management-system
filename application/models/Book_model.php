@@ -66,4 +66,68 @@ class Book_model extends App_Model
         $this->db->limit($limit);
         return $this->db->get()->result();
     }
+
+    /**
+     * Convert text into a URL-friendly slug.
+     */
+    public function slugify(string $text): string
+    {
+        $text = strtolower(trim($text));
+        $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+        $text = trim($text, '-');
+        return $text === '' ? 'book' : $text;
+    }
+
+    /**
+     * Whether a slug already exists in the table (optionally excluding a book).
+     */
+    public function slug_exists(string $slug, int|string|null $exclude_id = null): bool
+    {
+        $this->db->where('slug', $slug);
+        if ($exclude_id !== null) {
+            $this->db->where('id !=', $exclude_id);
+        }
+        return (bool) $this->db->count_all_results($this->table);
+    }
+
+    /**
+     * Generate a unique slug for a book.
+     *
+     * Tries, in order:
+     *   1. book-name
+     *   2. book-name-author
+     *   3. book-name-author-year
+     *   4. book-name-author-year-1, -2, ...
+     *
+     * @param int|string|null $exclude_id Book id to ignore (when editing).
+     */
+    public function generate_unique_slug(string $title, string $author = '', ?int $year = null, int|string|null $exclude_id = null): string
+    {
+        $base    = $this->slugify($title);
+        $author  = $this->slugify($author);
+        $year    = $year ? (int) $year : null;
+        $candidates = array($base);
+
+        if ($author !== '') {
+            $candidates[] = $base . '-' . $author;
+            if ($year) {
+                $candidates[] = $base . '-' . $author . '-' . $year;
+            }
+        } elseif ($year) {
+            $candidates[] = $base . '-' . $year;
+        }
+
+        foreach ($candidates as $candidate) {
+            if (!$this->slug_exists($candidate, $exclude_id)) {
+                return $candidate;
+            }
+        }
+
+        $slug = end($candidates);
+        $i    = 1;
+        while ($this->slug_exists($slug . '-' . $i, $exclude_id)) {
+            $i++;
+        }
+        return $slug . '-' . $i;
+    }
 }

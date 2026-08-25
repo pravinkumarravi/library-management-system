@@ -59,6 +59,21 @@ class Issue_model extends App_Model
         return $this->db->get()->result();
     }
 
+    /**
+     * All issue records for a single book (with member details), newest first.
+     *
+     * @return array<int, object>
+     */
+    public function get_by_book(int|string $book_id): array
+    {
+        $this->db->select('issues.*, members.name AS member_name, members.email AS member_email');
+        $this->db->from('issues');
+        $this->db->join('members', 'members.id = issues.member_id');
+        $this->db->where('issues.book_id', $book_id);
+        $this->db->order_by('issues.issue_date', 'DESC');
+        return $this->db->get()->result();
+    }
+
     public function get(int|string $id): ?object
     {
         $this->db->select('issues.*, books.title AS book_title, books.author AS book_author, members.name AS member_name, members.email AS member_email');

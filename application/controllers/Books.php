@@ -6,7 +6,7 @@ class Books extends App_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Book_model', 'Category_model'));
+        $this->load->model(array('Book_model', 'Category_model', 'Issue_model'));
     }
 
     public function index(): void
@@ -41,6 +41,24 @@ class Books extends App_Controller
         $this->_form($data);
     }
 
+    /**
+     * Book details page (/books/<slug>) with who has taken this book.
+     */
+    public function show(string $slug): void
+    {
+        $book = $this->Book_model->find(array('slug' => $slug));
+        if (!$book) {
+            show_404();
+        }
+        $category = $book->category_id ? $this->Category_model->get($book->category_id) : null;
+        $data = array(
+            'book'     => $book,
+            'category' => $category ? $category->name : null,
+            'taken_by' => $this->Issue_model->get_by_book($book->id),
+        );
+        $this->view('books/view', $data);
+    }
+
     private function _form(array $data): void
     {
         if ($this->input->post()) {
@@ -60,6 +78,13 @@ class Books extends App_Controller
                     'year'            => (int) $this->input->post('year') ?: NULL,
                     'category_id'     => (int) $this->input->post('category_id') ?: NULL,
                     'total_copies'    => $total,
+                );
+
+                $fields['slug'] = $this->Book_model->generate_unique_slug(
+                    $fields['title'],
+                    $fields['author'],
+                    $fields['year'],
+                    $id // null on create; current id on edit so its own slug is ignored
                 );
 
                 if ($id) {
