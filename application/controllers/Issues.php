@@ -31,8 +31,9 @@ class Issues extends App_Controller
 
     public function issue(): void
     {
-        $active_ids = array();
-        foreach ($this->Issue_model->get_active() as $row) {
+        $active_rows = $this->Issue_model->get_active();
+        $active_ids  = array();
+        foreach ($active_rows as $row) {
             $active_ids[$row->member_id] = true;
         }
 
@@ -58,6 +59,21 @@ class Issues extends App_Controller
                 }
 
                 if ($this->Issue_model->has_active_issue($member_id)) {
+                    $member = $this->Member_model->get($member_id);
+                    $held   = '';
+                    foreach ($active_rows as $row) {
+                        if ($row->member_id == $member_id) {
+                            $held = $row->book_title;
+                            break;
+                        }
+                    }
+                    $this->Notification_model->broadcast(
+                        'blocked',
+                        'Borrow attempt blocked',
+                        ($member ? $member->name : 'A member') . ' could not borrow a new book because '
+                            . ($held ? "they still hold '{$held}'" : 'they already have an unreturned book'),
+                        'issues'
+                    );
                     $this->flash('danger', 'This member already has an unreturned book. Return the previous book before issuing a new one.');
                     redirect('issues/issue');
                 }
@@ -72,6 +88,27 @@ class Issues extends App_Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 ));
                 $this->Book_model->adjust_copies($book_id, -1);
+
+                $book   = $this->Book_model->get($book_id);
+                $member = $this->Member_model->get($member_id);
+                $this->Notification_model->broadcast(
+                    'issue',
+                    'Book issued',
+                    ($book ? $book->title : 'A book') . ' issued to ' . ($member ? $member->name : 'a member') . " — due {$due_date}",
+                    'issues'
+                );
+
+                // Alert when every copy of the book is now borrowed.
+                if ($book && (int) $book->available_copies === 0) {
+                    $this->Notification_model->broadcast_once(
+                        'out_of_stock',
+                        'All copies issued',
+                        "All copies of '{$book->title}' are currently borrowed",
+                        'books',
+                        'stock:' . $book_id
+                    );
+                }
+
                 $this->flash('success', 'Book issued successfully.');
                 redirect('issues');
             }
@@ -100,6 +137,14 @@ class Issues extends App_Controller
             'fine'        => $fine,
         ));
         $this->Book_model->adjust_copies($issue->book_id, 1);
+
+        $this->Notification_model->broadcast(
+            'return',
+            'Book returned',
+            ($issue->book_title ?: 'A book') . ' returned by ' . ($issue->member_name ?: 'a member')
+                . ($fine > 0 ? " — fine " . money($fine) . ' collected' : ''),
+            'issues/history'
+        );
 
         $note = $fine > 0 ? ' Fine collected: ' . money($fine) : '';
         $this->flash('success', 'Book returned successfully.' . $note);

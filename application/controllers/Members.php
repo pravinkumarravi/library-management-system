@@ -13,9 +13,6 @@ class Members extends App_Controller
     {
         $search = $this->input->get('search', TRUE);
         $members = $this->Member_model->get_all($search ?: '');
-        foreach ($members as &$m) {
-            $m->active = $this->Member_model->active_issues($m->id);
-        }
         $data = array('members' => $members, 'search' => $search);
         $this->view('members/index', $data);
     }

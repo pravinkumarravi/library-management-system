@@ -114,7 +114,7 @@
                 <!-- Notification Dropdown -->
                 <div class="relative" x-data="{
                     dropdownOpen: false,
-                    notifying: true,
+                    notifying: {{ $unread_notifications > 0 ? 'true' : 'false' }},
                     toggleDropdown() {
                         this.dropdownOpen = !this.dropdownOpen;
                         this.notifying = false;
@@ -127,12 +127,15 @@
                         class="relative flex items-center justify-center text-gray-500 transition-colors bg-white border border-gray-200 rounded-full hover:text-dark-900 h-11 w-11 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
                         @click="toggleDropdown()"
                         type="button">
-                        <span
-                            x-show="notifying"
-                            class="absolute right-0 top-0.5 z-1 h-2 w-2 rounded-full bg-orange-400">
+                        @if($unread_notifications > 0)
                             <span
-                                class="absolute inline-flex w-full h-full bg-orange-400 rounded-full opacity-75 -z-1 animate-ping"></span>
-                        </span>
+                                x-show="notifying"
+                                class="absolute right-0 top-0.5 z-1 h-2 w-2 rounded-full bg-orange-400">
+                                <span
+                                    class="absolute inline-flex w-full h-full bg-orange-400 rounded-full opacity-75 -z-1 animate-ping"></span>
+                            </span>
+                            <span class="absolute right-0 bottom-0.5 z-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-500 px-1 text-[9px] font-semibold text-white">{{ $unread_notifications > 99 ? '99+' : $unread_notifications }}</span>
+                        @endif
                         <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -149,7 +152,7 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute -right-[240px] mt-[17px] flex h-[480px] w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark sm:w-[361px] lg:right-0"
+                        class="absolute -right-[240px] mt-[17px] flex max-h-[480px] w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark sm:w-[361px] lg:right-0"
                         style="display: none;">
                         <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-100 dark:border-gray-800">
                             <h5 class="text-lg font-semibold text-gray-800 dark:text-white/90">Notification</h5>
@@ -164,42 +167,34 @@
                         </div>
 
                         <ul class="flex flex-col h-auto overflow-y-auto custom-scrollbar">
-                            @php
-                                $notifications = array(
-                                    array('userName' => 'Terry Franci', 'userImage' => 'user-02.jpg', 'action' => 'requests permission to change', 'project' => 'Project - Nganter App', 'type' => 'Project', 'time' => '5 min ago', 'status' => 'online'),
-                                    array('userName' => 'Alex Johnson', 'userImage' => 'user-03.jpg', 'action' => 'requests permission to change', 'project' => 'Project - Nganter App', 'type' => 'Project', 'time' => '10 min ago', 'status' => 'offline'),
-                                    array('userName' => 'Sarah Williams', 'userImage' => 'user-04.jpg', 'action' => 'requests permission to change', 'project' => 'Project - Dashboard UI', 'type' => 'Project', 'time' => '15 min ago', 'status' => 'online'),
-                                    array('userName' => 'Mike Brown', 'userImage' => 'user-05.jpg', 'action' => 'requests permission to change', 'project' => 'Project - E-commerce', 'type' => 'Project', 'time' => '20 min ago', 'status' => 'online'),
-                                    array('userName' => 'Emma Davis', 'userImage' => 'user-06.jpg', 'action' => 'requests permission to change', 'project' => 'Project - Mobile App', 'type' => 'Project', 'time' => '25 min ago', 'status' => 'offline'),
-                                );
-                            @endphp
-                            @foreach ($notifications as $notification)
-                                <li>
-                                    <a class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
-                                        href="#">
-                                        <span class="relative block w-full h-10 rounded-full z-1 max-w-10">
-                                            <img src="{{ $base_url }}assets/images/user/{{ $notification['userImage'] }}" alt="User" class="overflow-hidden rounded-full" />
-                                            <span
-                                                class="absolute bottom-0 right-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white dark:border-gray-900 {{ $notification['status'] === 'online' ? 'bg-success-500' : 'bg-error-500' }}"></span>
-                                        </span>
-                                        <span class="block">
-                                            <span class="mb-1.5 block text-theme-sm text-gray-500 dark:text-gray-400">
-                                                <span class="font-medium text-gray-800 dark:text-white/90">{{ $notification['userName'] }}</span>
-                                                {{ $notification['action'] }}
-                                                <span class="font-medium text-gray-800 dark:text-white/90">{{ $notification['project'] }}</span>
-                                            </span>
-                                            <span class="flex items-center gap-2 text-gray-500 text-theme-xs dark:text-gray-400">
-                                                <span>{{ $notification['type'] }}</span>
-                                                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
-                                                <span>{{ $notification['time'] }}</span>
-                                            </span>
-                                        </span>
-                                    </a>
+                            @if(count($recent_notifications) == 0)
+                                <li class="px-4.5 py-8 text-center text-theme-sm text-gray-500 dark:text-gray-400">
+                                    No notifications yet.
                                 </li>
-                            @endforeach
+                            @else
+                                @foreach($recent_notifications as $n)
+                                    <li>
+                                        <a class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5 {{ $n->is_read ? '' : 'bg-brand-50/60 dark:bg-brand-500/10' }}"
+                                            href="{{ $base_url }}notifications/read/{{ $n->id }}">
+                                            <span class="block w-full">
+                                                <span class="mb-1.5 block text-theme-sm text-gray-500 dark:text-gray-400">
+                                                    <span class="font-medium text-gray-800 dark:text-white/90">{{ $n->title }}</span>
+                                                    {{ $n->message }}
+                                                </span>
+                                                <span class="flex items-center gap-2 text-gray-500 text-theme-xs dark:text-gray-400">
+                                                    <span>{{ relative_time($n->created_at) }}</span>
+                                                    @if(!$n->is_read)
+                                                        <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                                                    @endif
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
 
-                        <a href="#"
+                        <a href="{{ $base_url }}notifications"
                             class="mt-3 flex justify-center rounded-lg border border-gray-300 bg-white p-3 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
                             View All Notification
                         </a>

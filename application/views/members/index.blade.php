@@ -31,7 +31,7 @@
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Email</p></th>
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Phone</p></th>
                         <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Membership</p></th>
-                        <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Active</p></th>
+                        <th class="py-3 text-left"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</p></th>
                         <th class="py-3 text-right"><p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Actions</p></th>
                     </tr>
                 </thead>
@@ -51,10 +51,10 @@
                                 <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $m->membership_date ?: '—' }}</p>
                             </td>
                             <td class="py-3 whitespace-nowrap">
-                                @if($m->active > 0)
-                                    <span class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">{{ $m->active }}</span>
+                                @if($m->status == 'active')
+                                    <span class="rounded-full bg-success-50 px-2 py-0.5 text-theme-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">Active</span>
                                 @else
-                                    <span class="text-gray-400 text-theme-sm dark:text-gray-500">0</span>
+                                    <span class="rounded-full bg-gray-100 px-2 py-0.5 text-theme-xs font-medium text-gray-500 dark:bg-gray-500/15 dark:text-gray-400">Inactive</span>
                                 @endif
                             </td>
                             <td class="py-3 whitespace-nowrap">

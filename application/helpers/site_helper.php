@@ -26,3 +26,31 @@ if (!function_exists('money')) {
         return '₹' . number_format((float) $amount, 2);
     }
 }
+
+if (!function_exists('relative_time')) {
+    /**
+     * Human-friendly relative time ("5 min ago", "2 days ago", or a date).
+     */
+    function relative_time(string $datetime): string
+    {
+        $ts = strtotime($datetime);
+        if (!$ts) {
+            return $datetime;
+        }
+        $diff = time() - $ts;
+        if ($diff < 60) {
+            return 'just now';
+        }
+        if ($diff < 3600) {
+            return floor($diff / 60) . ' min ago';
+        }
+        if ($diff < 86400) {
+            return floor($diff / 3600) . ' hr ago';
+        }
+        if ($diff < 604800) {
+            $days = floor($diff / 86400);
+            return $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
+        }
+        return date('M d, Y', $ts);
+    }
+}
