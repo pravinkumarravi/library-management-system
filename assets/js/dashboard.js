@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chart: {
                 fontFamily: 'Outfit, sans-serif',
                 type: 'radialBar',
-                height: 330,
+                height: 195,
                 sparkline: {
                     enabled: true,
                 },
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         value: {
                             fontSize: '36px',
                             fontWeight: '600',
-                            offsetY: 60,
+                            offsetY: 45,
                             color: '#1D2939',
                             formatter: function (val) {
                                 return val + '%';
