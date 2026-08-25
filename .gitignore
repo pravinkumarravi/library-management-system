@@ -1,0 +1,21 @@
+# Dependencies (rebuild with: npm install)
+node_modules/
+
+# CI3 runtime artifacts
+application/cache/*
+application/logs/*
+!application/cache/index.html
+!application/logs/index.html
+
+# Local SQLite database (recreate via: php index.php migrate)
+application/db/library.sqlite
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Temp files
+*.log
