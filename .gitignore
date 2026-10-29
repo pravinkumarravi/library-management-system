@@ -19,3 +19,12 @@ Thumbs.db
 
 # Temp files
 *.log
+0.26.0
+
+# Virtual environment & PDF generation tooling
+.venv/
+tools/
+
+# Generated documentation outputs
+docs/*.pdf
+docs/*.html

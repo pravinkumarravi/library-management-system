@@ -1,85 +1,178 @@
 # Library Management System
 
-A complete Library Management System built with **CodeIgniter 3**, **BladeOne** (Blade templating), **Tailwind CSS v4**, **Alpine.js** and the **TailAdmin** design system. SQLite is pre-configured so the app runs with zero setup.
+A modern, full-stack **Library Management System** built with **PHP 8**, **CodeIgniter 3 (HMVC-ready MVC)**, **BladeOne** template engine, **Tailwind CSS v4**, **Alpine.js**, and the **TailAdmin** design system. 
 
-## Features
+The application is pre-configured with a self-contained **SQLite 3** database for zero-setup execution, and includes a full **MySQL 8.x** relational schema for production deployment.
 
-- Dashboard with live stats, charts (ApexCharts) and collection widgets
-- Manage **Books**, **Categories** and **Members**
-- **Issue / Return** books with due dates and automatic overdue fines
-- **Issue History** and **Overdue** tracking
-- Responsive **TailAdmin** UI with **dark mode**
-- CLI migrations for schema management
-- Default login: `admin` / `admin123`
+---
 
-## Tech Stack
+## Key Features
 
-| Layer    | Technology                              |
-| -------- | --------------------------------------- |
-| Backend  | PHP 8, CodeIgniter 3 (HMVC-ready)      |
-| Templating | BladeOne (Laravel Blade syntax)       |
-| Frontend | Tailwind CSS v4, Alpine.js, ApexCharts  |
-| Database | SQLite (default), MySQL schema included |
+- **Executive Analytics Dashboard:**
+  - Real-time library metrics (Total Books, Registered Members, Active Issues, Overdue Defaulters).
+  - Interactive monthly circulation trends chart powered by **ApexCharts**.
+  - Radial collection utilization gauge and top borrowing categories breakdown.
+  - Notification center with quick-action transaction alerts.
 
-## Setup
+- **Catalog & Inventory Management:**
+  - Complete Book Catalog with real-time search, category filtering, and inventory status badges.
+  - Automatic URL slugification, ISBN uniqueness enforcement, and stock level controls.
+  - Categorization system with book count aggregation.
 
-Requirements: **PHP 8+**, **Node.js + npm**, **Composer** (only if `vendor/` is missing).
+- **Member Administration:**
+  - Member onboarding and record management.
+  - Instant membership status toggling (Active / Inactive) and borrow eligibility checks.
 
-```bash
-# 1. Install PHP dependencies (skip if vendor/ is committed)
-composer install
+- **Circulation Desk Operations:**
+  - Rapid Book Issue desk with real-time member and book availability verification.
+  - Atomic inventory decrement upon book issue.
+  - 14-day default borrowing window with customizable return dates.
+  - Book return processing with atomic copy restoration.
 
-# 2. Install JS dependencies and build CSS/JS bundles
-npm install
-npm run build
+- **Automated Overdue & Penalty Engine:**
+  - Automatic tracking of overdue borrowings.
+  - Dynamic fine calculation based on elapsed overdue days.
+  - Overdue notification alerts for delinquent accounts.
 
-# 3. Start the dev server
-php -S localhost:8000
+- **Audit & Historical Records:**
+  - Full issue and return transaction history with member and book relational joins.
+  - Return status timestamps and overdue fine audits.
 
-# 4. Create the database tables (CLI)
-php index.php migrate
-```
+- **Modern Responsive UI / UX:**
+  - Utility-first styling via **Tailwind CSS v4** and **TailAdmin** component system.
+  - Full **Dark Mode** support with smooth Alpine.js reactive store toggling.
+  - Single-page responsiveness across desktop, tablet, and mobile viewports.
 
-Then open http://localhost:8000 and log in with **admin / admin123**.
+---
 
-## Database Migrations (CLI)
+## Tech Stack & Architecture
 
-Migrations live in `application/migrations/` and are CLI-only.
+| Layer | Technology | Description |
+|---|---|---|
+| **Backend Runtime** | PHP 8.2+ | Strict typing, OPcache JIT compilation, secure password hashing |
+| **MVC Framework** | CodeIgniter 3.x | Lightweight MVC, Active Record Query Builder, Session management |
+| **Template Engine** | BladeOne (EFTEC) | Laravel Blade syntax, template inheritance (`@extends`, `@section`) |
+| **Frontend Framework** | Alpine.js 3.x | Declarative, lightweight reactive state management |
+| **Styling & Design** | Tailwind CSS v4 & TailAdmin | Modern utility-first responsive layout with dark mode |
+| **Data Visualization** | ApexCharts.js | Interactive circulation analytics and radial collection charts |
+| **Database Engine** | SQLite 3 / MySQL 8.x | Zero-config local SQLite + production MySQL DDL schema |
 
-```bash
-php index.php migrate            # migrate to the latest version
-php index.php migrate version 3  # migrate up/down to a specific version
-```
+---
 
-> Rolling back a migration runs its `down()` method, which drops the table — use with caution.
+## Screenshots
+
+<div align="center">
+
+### Executive Dashboard (Light & Dark Theme)
+<p float="left">
+  <img src="docs/screenshots/02_dashboard.png" width="48%" alt="Dashboard Light Mode" />
+  <img src="docs/screenshots/03_dashboard_dark.png" width="48%" alt="Dashboard Dark Mode" />
+</p>
+
+### Book Catalog & Circulation Desk
+<p float="left">
+  <img src="docs/screenshots/04_books_catalog.png" width="48%" alt="Books Catalog" />
+  <img src="docs/screenshots/08_issues_active.png" width="48%" alt="Active Borrowings" />
+</p>
+
+### Overdue Fines & Issue History
+<p float="left">
+  <img src="docs/screenshots/10_overdue_fines.png" width="48%" alt="Overdue Defaulters and Fines" />
+  <img src="docs/screenshots/11_issue_history.png" width="48%" alt="Issue Transaction History" />
+</p>
+
+</div>
+
+---
+
+## Quick Start & Installation
+
+### Prerequisites
+- **PHP 8.1+** with `pdo_sqlite` and `mbstring` extensions enabled.
+- **Node.js 18+** & **npm** (for building frontend assets).
+- **Composer** (optional, dependencies are pre-bundled).
+
+### Setup Instructions
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/pravinkumarravi/library-management-system.git
+   cd library-management-system
+   ```
+
+2. **Install frontend dependencies & compile assets:**
+   ```bash
+   npm install
+   npm run build
+   ```
+
+3. **Database Setup:**
+   The SQLite database is pre-configured and located at `application/db/library.sqlite`.
+   To run or verify CLI migrations:
+   ```bash
+   php index.php migrate
+   ```
+
+4. **Start the local PHP server:**
+   ```bash
+   php -S localhost:8000
+   ```
+
+5. **Open in browser:**
+   Navigate to `http://localhost:8000`
+
+---
+
+## Default Credentials
+
+| Role | Username | Password | Access Level |
+|---|---|---|---|
+| **Administrator** | `admin` | `admin123` | Full access to catalog, members, circulation, and reports |
+
+---
 
 ## Project Structure
 
 ```
-application/
-├── config/        # CI3 config (base_url auto-detects, migrations enabled)
-├── controllers/   # Auth, Books, Categories, Members, Issues, Dashboard
-├── core/          # App_Controller / App_Model base classes
-├── migrations/    # 001–006 schema migrations (CLI)
-├── models/        # Book, Category, Issue, Member, User models
-└── views/         # Blade templates (layouts, auth, dashboard, crud)
-assets/
-├── css/           # Tailwind v4 source + compiled app.min.css
-├── js/            # Alpine/ApexCharts bundles + dashboard.js
-└── images/        # TailAdmin logo, icons, avatars
-sql/
-└── library.sql    # MySQL schema (alternative to SQLite)
+library-management-system/
+├── application/
+│   ├── config/            # CI3 configuration (database, routes, migrations)
+│   ├── controllers/       # MVC Controllers (Auth, Books, Categories, Members, Issues, Dashboard)
+│   ├── core/              # Base App_Controller and App_Model
+│   ├── db/                # SQLite database storage (library.sqlite)
+│   ├── helpers/           # BladeOne view helpers and view renderer
+│   ├── libraries/         # Custom BladeOne library integration
+│   ├── migrations/        # Database schema migrations (001 - 006)
+│   ├── models/            # Relational models (Book, Category, Issue, Member, User)
+│   └── views/             # Blade templates (layouts, auth, dashboard, books, issues, members)
+├── assets/
+│   ├── css/               # Tailwind CSS v4 source and compiled app.min.css
+│   ├── js/                # Alpine.js, ApexCharts, and dashboard scripts
+│   └── images/            # UI icons, avatars, and application branding
+├── docs/
+│   └── screenshots/       # Application walkthrough screen captures
+├── sql/
+│   └── library.sql        # MySQL 8 relational schema and seed records
+├── package.json           # Frontend build scripts (Tailwind & Rollup)
+└── README.md              # Project documentation
 ```
 
-## Scripts
+---
 
-| Command          | Description                          |
-| ---------------- | ------------------------------------ |
-| `npm run build`  | Build CSS + JS bundles               |
-| `npm run build:css` | Build only the Tailwind CSS       |
-| `npm run build:js`  | Build only the Alpine/ApexCharts bundles |
-| `php index.php migrate` | Run database migrations (CLI) |
+## Database Migrations (CLI)
+
+Database migrations are managed via CodeIgniter CLI:
+
+```bash
+# Migrate to latest schema version
+php index.php migrate
+
+# Rollback or migrate to specific version
+php index.php migrate version 3
+```
+
+---
 
 ## License
 
-This project is for educational use.
+This project is open-source and available under the [MIT License](LICENSE).
